@@ -5,6 +5,9 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/apierror"
+	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/config"
+	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/routes"
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/pkg"
 	"github.com/gorilla/mux"
 )
@@ -28,14 +31,22 @@ func NewAPIServer() APIServer {
 
 // Function Start Server
 func (s *apiServer) Run() {
+	// Database Connection
+	db := config.NewDatabaseConnection()
+	defer db.Close()
+
 	// Declare Mux Routing
 	r := mux.NewRouter()
 
 	// Middleware
 
 	// Routing
+	routes.UserRouter(r.PathPrefix("/users").Subrouter(), db)
 
 	// Not Found Handler
+	r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		pkg.HttpErrorResponse(w, apierror.ErrPageNotFound)
+	})
 
 	// Running Mux Router
 	fmt.Println("Server Running On :", s.ListenAndServeString)
