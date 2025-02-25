@@ -41,7 +41,7 @@ func (s *apiServer) Run() {
 	// Middleware
 
 	// Routing
-	routes.UserRouter(r.PathPrefix("/users").Subrouter(), db)
+	routes.UserRouter(r, db)
 
 	// Not Found Handler
 	r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

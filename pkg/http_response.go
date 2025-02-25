@@ -7,7 +7,7 @@ import (
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/apierror"
 )
 
-func HttpErrorResponse(w http.ResponseWriter, e any) {
+func HttpErrorResponse(w http.ResponseWriter, e any) error {
 	// Setting Response To Json Type
 	w.Header().Set("Content-type", "application/json")
 
@@ -16,16 +16,16 @@ func HttpErrorResponse(w http.ResponseWriter, e any) {
 	// Handle Internal Server Error If Assert Error
 	if !ok {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(apierror.ErrInternalServerError)
-		return
+		return json.NewEncoder(w).Encode(apierror.ErrInternalServerError)
 	}
 
 	// If Assert Success
 	w.WriteHeader(data.StatusCode)
-	json.NewEncoder(w).Encode(data)
+	return json.NewEncoder(w).Encode(data)
 }
 
-func HttpSuccessResponse(w http.ResponseWriter, e any) {
+func HttpSuccessResponse(w http.ResponseWriter, e any) error {
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(e)
+	return json.NewEncoder(w).Encode(e)
 }
