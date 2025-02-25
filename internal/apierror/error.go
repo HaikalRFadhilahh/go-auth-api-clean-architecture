@@ -35,4 +35,5 @@ var (
 	ErrInternalServerError = APIErrorResponse{StatusCode: http.StatusInternalServerError, Status: "error", Message: "Internal Server Error"}
 	ErrPageNotFound        = APIErrorResponse{StatusCode: http.StatusNotFound, Status: "error", Message: "Not Found"}
 	ErrBadRequest          = APIErrorResponse{StatusCode: http.StatusBadRequest, Status: "error", Message: "Bad Request"}
+	ErrForbidden           = APIErrorResponse{StatusCode: http.StatusForbidden, Status: "error", Message: "Forbidden"}
 )

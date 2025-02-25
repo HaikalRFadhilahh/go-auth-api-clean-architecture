@@ -79,7 +79,9 @@ func (u *UserHandler) Register(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (u *UserHandler) GetAllUser(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	return pkg.HttpSuccessResponse(w, map[string]string{
+		"message": "Data All Users",
+	})
 }
 
 func (u *UserHandler) GetUserById(w http.ResponseWriter, r *http.Request) error {

@@ -7,6 +7,7 @@ import (
 
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/apierror"
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/config"
+	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/middleware"
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/routes"
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/pkg"
 	"github.com/gorilla/mux"
@@ -39,6 +40,7 @@ func (s *apiServer) Run() {
 	r := mux.NewRouter()
 
 	// Middleware
+	r.Use(middleware.LoggingMiddleware)
 
 	// Routing
 	routes.UserRouter(r, db)

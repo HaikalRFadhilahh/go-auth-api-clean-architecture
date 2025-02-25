@@ -42,7 +42,10 @@ func (u *UserUsecase) Login(request *dto.UserLoginRequest) (string, error) {
 	}
 
 	// Build Token
-	temporaryToken := "initokendariusecase"
+	temporaryToken, err := pkg.GenerateJWT(data.ID, data.Name, data.Username)
+	if err != nil {
+		return "", err
+	}
 
 	return temporaryToken, nil
 }

@@ -28,13 +28,13 @@ func (u *userRepository) GetUserById(id int) (domain.User, error) {
 
 func (u *userRepository) GetUserByUsername(username string) (domain.User, error) {
 	// Build Query
-	query := "SELECT username,password from users WHERE username = ?"
+	query := "SELECT id,name,username,password from users WHERE username = ?"
 
 	// Create Var Data Handler
 	var data domain.User
 
 	// Exec Query
-	err := u.db.QueryRow(query, username).Scan(&data.Username, &data.Password)
+	err := u.db.QueryRow(query, username).Scan(&data.ID, &data.Name, &data.Username, &data.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return domain.User{}, apierror.APIErrorResponse{
