@@ -30,3 +30,10 @@ type UserGetAllDataResponse struct {
 	Data       []domain.User `json:"data"`
 	Pagination Pagination    `json:"pagination"`
 }
+
+type UserDeleteResponse struct {
+	StatusCode int         `json:"statusCode"`
+	Status     string      `json:"status"`
+	Message    string      `json:"message"`
+	Data       domain.User `json:"data"`
+}

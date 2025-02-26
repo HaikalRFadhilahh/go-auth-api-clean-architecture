@@ -11,6 +11,7 @@ import (
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/dto"
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/usecase"
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/pkg"
+	"github.com/gorilla/mux"
 )
 
 type UserHandler struct {
@@ -108,7 +109,6 @@ func (u *UserHandler) GetAllUser(w http.ResponseWriter, r *http.Request) error {
 	search := r.URL.Query().Get("search")
 	activePage, err := strconv.Atoi(r.URL.Query().Get("activePage"))
 	if err != nil {
-		fmt.Println("Error Convert INT Atoi : ", err.Error())
 		activePage = 1
 	}
 
@@ -140,5 +140,25 @@ func (u *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (u *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	// Take Params
+	id, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		return apierror.ErrBadRequest
+	}
+
+	// Call usecase Function
+	data, err := u.usecase.DeleteUser(id)
+	if err != nil {
+		return err
+	}
+
+	// Building The Response
+	res := dto.UserDeleteResponse{
+		StatusCode: http.StatusOK,
+		Status:     "success",
+		Message:    fmt.Sprintf("Success Delete Data With ID {%v}", id),
+		Data:       data,
+	}
+
+	return pkg.HttpSuccessResponse(w, res)
 }

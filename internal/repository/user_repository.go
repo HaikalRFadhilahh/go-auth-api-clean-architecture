@@ -87,7 +87,7 @@ func (u *userRepository) GetUserById(id int) (domain.User, error) {
 	err := u.db.QueryRow(query, id).Scan(&data.ID, &data.Name, &data.Age, &data.Username)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return data, apierror.ErrForbidden
+			return data, apierror.ErrPageNotFound
 		}
 
 		return data, apierror.APIErrorResponse{
@@ -149,6 +149,25 @@ func (u *userRepository) UpdateUser(user domain.User, id int) (domain.User, erro
 	return domain.User{}, nil
 }
 
-func (u *userRepository) DeleteUser(id int) (domain.User, error) {
-	return domain.User{}, nil
+func (u *userRepository) DeleteUser(id int) (data domain.User, err error) {
+	// Building Query
+	query := "DELETE FROM users WHERE id=?"
+
+	// Get Data Old
+	data, err = u.GetUserById(id)
+	if err != nil {
+		return data, apierror.ErrPageNotFound
+	}
+
+	// Exec Query
+	_, err = u.db.Exec(query, id)
+	if err != nil {
+		return data, apierror.APIErrorResponse{
+			StatusCode: http.StatusInternalServerError,
+			Status:     "error",
+			Message:    err.Error(),
+		}
+	}
+
+	return
 }

@@ -138,3 +138,8 @@ func (u *UserUsecase) GetDataUser(search string, activePage int) ([]domain.User,
 	// Retutn Data
 	return datas, pagination, nil
 }
+
+func (u *UserUsecase) DeleteUser(id int) (domain.User, error) {
+	// Call Repository Delete Users
+	return u.repository.DeleteUser(id)
+}
