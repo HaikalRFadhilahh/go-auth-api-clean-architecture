@@ -117,3 +117,24 @@ func (u *UserUsecase) Validate(token string) (domain.User, error) {
 
 	return datas, nil
 }
+
+func (u *UserUsecase) GetDataUser(search string, activePage int) ([]domain.User, dto.Pagination, error) {
+	// Take Data From Repository
+	// Get Data All Users
+	datas, err := u.repository.GetUser(search, activePage)
+	if err != nil {
+		return nil, dto.Pagination{}, err
+	}
+
+	// Get Pagination Data
+	totalData, err := u.repository.GetUserPagination(search)
+	if err != nil {
+		return nil, dto.Pagination{}, err
+	}
+
+	// Building Pagination
+	pagination := dto.NewPagination(totalData, activePage)
+
+	// Retutn Data
+	return datas, pagination, nil
+}

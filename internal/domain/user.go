@@ -1,6 +1,8 @@
 package domain
 
-import "time"
+import (
+	"time"
+)
 
 type User struct {
 	ID        int        `json:"id,omitempty"`
@@ -13,7 +15,8 @@ type User struct {
 }
 
 type UserRepository interface {
-	GetUser(q string) ([]User, error)
+	GetUser(search string, activePage int) ([]User, error)
+	GetUserPagination(search string) (int, error)
 	GetUserById(id int) (User, error)
 	GetUserByUsername(username string) (User, error)
 	CreateUser(*User) error

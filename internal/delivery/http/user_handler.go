@@ -2,7 +2,9 @@ package http
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/apierror"
@@ -102,9 +104,31 @@ func (u *UserHandler) Validate(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (u *UserHandler) GetAllUser(w http.ResponseWriter, r *http.Request) error {
-	return pkg.HttpSuccessResponse(w, map[string]string{
-		"message": "Data All Users",
-	})
+	// Take Data Query Data Header
+	search := r.URL.Query().Get("search")
+	activePage, err := strconv.Atoi(r.URL.Query().Get("activePage"))
+	if err != nil {
+		fmt.Println("Error Convert INT Atoi : ", err.Error())
+		activePage = 1
+	}
+
+	// Exec Usecase Get All Data User
+	datas, pagination, err := u.usecase.GetDataUser(search, activePage)
+	if err != nil {
+		return err
+	}
+
+	// Building Response
+	res := dto.UserGetAllDataResponse{
+		StatusCode: http.StatusOK,
+		Status:     "success",
+		Message:    "Data All Users",
+		Data:       datas,
+		Pagination: pagination,
+	}
+
+	// Return Response
+	return pkg.HttpSuccessResponse(w, res)
 }
 
 func (u *UserHandler) GetUserById(w http.ResponseWriter, r *http.Request) error {

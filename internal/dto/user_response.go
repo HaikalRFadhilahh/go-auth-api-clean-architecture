@@ -22,3 +22,11 @@ type UserValidateResponse struct {
 	Message    string      `json:"message"`
 	Data       domain.User `json:"data"`
 }
+
+type UserGetAllDataResponse struct {
+	StatusCode int           `json:"statusCode"`
+	Status     string        `json:"status"`
+	Message    string        `json:"message"`
+	Data       []domain.User `json:"data"`
+	Pagination Pagination    `json:"pagination"`
+}

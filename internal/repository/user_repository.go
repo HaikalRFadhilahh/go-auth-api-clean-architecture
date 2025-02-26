@@ -18,8 +18,62 @@ func NewUserRepository(db *sql.DB) domain.UserRepository {
 	}
 }
 
-func (u *userRepository) GetUser(q string) ([]domain.User, error) {
-	return nil, nil
+func (u *userRepository) GetUser(search string, activePage int) ([]domain.User, error) {
+	// Create Query
+	query := "SELECT id,name,age,username FROM users where name LIKE CONCAT('%',?,'%') OR age LIKE CONCAT('%',?,'%') OR username LIKE CONCAT('%',?,'%') LIMIT ? OFFSET ?"
+
+	// Create User Data
+	var data []domain.User
+
+	// Exec Query With Paramater
+	res, err := u.db.Query(query, search, search, search, 10, (activePage-1)*10)
+	if err != nil {
+		return nil, apierror.APIErrorResponse{
+			StatusCode: http.StatusInternalServerError,
+			Status:     "error",
+			Message:    err.Error(),
+		}
+	}
+
+	// Loop Reading Data Array
+	for res.Next() {
+		// Create Temp Variabel
+		var tempData domain.User
+
+		// Scanning Data
+		if err := res.Scan(&tempData.ID, &tempData.Name, &tempData.Age, &tempData.Username); err != nil {
+			return nil, apierror.APIErrorResponse{
+				StatusCode: http.StatusInternalServerError,
+				Status:     "error",
+				Message:    err.Error(),
+			}
+		}
+
+		// Append Data
+		data = append(data, tempData)
+	}
+
+	// Return Data
+	return data, nil
+}
+
+func (u *userRepository) GetUserPagination(search string) (int, error) {
+	// Create Temp Data For Total Data
+	var totalData int
+
+	// Create Query
+	query := "SELECT COUNT(*) FROM users WHERE name LIKE CONCAT('%',?,'%') OR age LIKE CONCAT('%',?,'%') OR username LIKE CONCAT('%',?,'%')"
+
+	// Scanning Exec Data
+	if err := u.db.QueryRow(query, search, search, search).Scan(&totalData); err != nil {
+		return 0, apierror.APIErrorResponse{
+			StatusCode: http.StatusInternalServerError,
+			Status:     "error",
+			Message:    err.Error(),
+		}
+	}
+
+	return totalData, nil
 }
 
 func (u *userRepository) GetUserById(id int) (domain.User, error) {
