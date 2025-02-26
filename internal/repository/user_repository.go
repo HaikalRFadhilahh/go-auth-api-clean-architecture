@@ -23,7 +23,27 @@ func (u *userRepository) GetUser(q string) ([]domain.User, error) {
 }
 
 func (u *userRepository) GetUserById(id int) (domain.User, error) {
-	return domain.User{}, nil
+	// Building Query
+	query := "SELECT id,name,age,username FROM users where id=?"
+
+	// Create Variabel To Temp Data User Models Query
+	var data domain.User
+
+	// Exec Query Row
+	err := u.db.QueryRow(query, id).Scan(&data.ID, &data.Name, &data.Age, &data.Username)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return data, apierror.ErrForbidden
+		}
+
+		return data, apierror.APIErrorResponse{
+			StatusCode: http.StatusInternalServerError,
+			Status:     "error",
+			Message:    err.Error(),
+		}
+	}
+
+	return data, nil
 }
 
 func (u *userRepository) GetUserByUsername(username string) (domain.User, error) {

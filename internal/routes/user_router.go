@@ -24,6 +24,7 @@ func UserRouter(r *mux.Router, db *sql.DB) {
 	// Routing Auth (Login,Register)
 	auth.HandleFunc("/login", pkg.ConvertToHttpHandleFunc(userHandler.Login)).Methods("POST")
 	auth.HandleFunc("/register", pkg.ConvertToHttpHandleFunc(userHandler.Register)).Methods("POST")
+	auth.HandleFunc("/validate", pkg.ConvertToHttpHandleFunc(userHandler.Validate)).Methods("POST")
 
 	// User Data Middleware
 	user.Use(middleware.CheckJWTMiddleware)

@@ -101,3 +101,19 @@ func (u *UserUsecase) Register(request *dto.UserRegisterRequest) error {
 	// Return Data
 	return nil
 }
+
+func (u *UserUsecase) Validate(token string) (domain.User, error) {
+	// Validate Token
+	data, err := pkg.DecodeJWT(token)
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	// Take Data With Usecase
+	datas, err := u.repository.GetUserById(data.Id)
+	if err != nil {
+		return datas, err
+	}
+
+	return datas, nil
+}

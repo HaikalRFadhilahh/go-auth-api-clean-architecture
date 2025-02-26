@@ -3,6 +3,7 @@ package http
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/apierror"
 	"github.com/HaikalRFadhilahh/go-auth-api-clean-architecture/internal/dto"
@@ -75,6 +76,28 @@ func (u *UserHandler) Register(w http.ResponseWriter, r *http.Request) error {
 		Data:       request,
 	}
 
+	return pkg.HttpSuccessResponse(w, res)
+}
+
+func (u *UserHandler) Validate(w http.ResponseWriter, r *http.Request) error {
+	// Ekstract Token From Header Autorization
+	token := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+
+	// Call Usecase
+	datas, err := u.usecase.Validate(token)
+	if err != nil {
+		return err
+	}
+
+	// Building Json Response Struct
+	res := dto.UserValidateResponse{
+		StatusCode: http.StatusOK,
+		Status:     "success",
+		Message:    "Data Users Decode From Authorization JWT Token",
+		Data:       datas,
+	}
+
+	// Return Success Response
 	return pkg.HttpSuccessResponse(w, res)
 }
 
