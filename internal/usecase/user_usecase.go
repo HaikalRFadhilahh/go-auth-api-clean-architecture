@@ -139,6 +139,46 @@ func (u *UserUsecase) GetDataUser(search string, activePage int) ([]domain.User,
 	return datas, pagination, nil
 }
 
+func (u *UserUsecase) UpdateUser(request *dto.UserUpdateRequest) (data domain.User, err error) {
+	// Validate UserUpdateRequest
+	if err = pkg.ValidateStruct(request); err != nil {
+		return data, apierror.APIErrorResponse{
+			StatusCode: http.StatusBadRequest,
+			Status:     "error",
+			Message:    err,
+		}
+
+	}
+
+	// Get Check Data Users
+	d, err := u.repository.GetUserById(request.Id)
+	if err != nil {
+		return
+	}
+
+	// Patch Update Logic
+	if request.Name != "" {
+		d.Name = request.Name
+	}
+
+	if request.Age != 0 {
+		d.Age = request.Age
+	}
+
+	if request.Username != "" {
+		d.Username = request.Username
+	}
+
+	// Call Repository
+	data, err = u.repository.UpdateUser(d)
+	if err != nil {
+		return data, err
+	}
+
+	// Return Data
+	return data, err
+}
+
 func (u *UserUsecase) DeleteUser(id int) (domain.User, error) {
 	// Call Repository Delete Users
 	return u.repository.DeleteUser(id)

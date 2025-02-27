@@ -145,8 +145,30 @@ func (u *userRepository) CreateUser(data *domain.User) error {
 	return nil
 }
 
-func (u *userRepository) UpdateUser(user domain.User, id int) (domain.User, error) {
-	return domain.User{}, nil
+func (u *userRepository) UpdateUser(user domain.User) (data domain.User, err error) {
+	// Building Query
+	query := "UPDATE users SET name=?,age=?,username=? WHERE id=?"
+
+	// Exec Query
+	res, err := u.db.Exec(query, user.Name, user.Age, user.Username, user.ID)
+	if err != nil {
+		return data, apierror.APIErrorResponse{
+			StatusCode: http.StatusInternalServerError,
+			Status:     "error",
+			Message:    err.Error(),
+		}
+	}
+
+	// Check Data
+	if _, err := res.RowsAffected(); err != nil {
+		return data, apierror.APIErrorResponse{
+			StatusCode: http.StatusNotFound,
+			Status:     "error",
+			Message:    "No Data User Updated",
+		}
+	}
+
+	return user, nil
 }
 
 func (u *userRepository) DeleteUser(id int) (data domain.User, err error) {

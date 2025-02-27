@@ -136,7 +136,39 @@ func (u *UserHandler) GetUserById(w http.ResponseWriter, r *http.Request) error 
 }
 
 func (u *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	// Get Id Data
+	id, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		return apierror.ErrBadRequest
+	}
+
+	// Get Data Request
+	var request dto.UserUpdateRequest
+
+	// Decode Request
+	dec := json.NewDecoder(r.Body)
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&request); err != nil {
+		return apierror.ErrBadRequest
+	}
+	request.Id = id
+
+	// Use Usecase Update User
+	data, err := u.usecase.UpdateUser(&request)
+	if err != nil {
+		return err
+	}
+
+	// Building Response Structute
+	res := dto.UserUpdateResponse{
+		StatusCode: http.StatusOK,
+		Status:     "success",
+		Message:    "success Updated Data",
+		Data:       data,
+	}
+
+	// Return Response To Users
+	return pkg.HttpSuccessResponse(w, res)
 }
 
 func (u *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) error {

@@ -20,6 +20,6 @@ type UserRepository interface {
 	GetUserById(id int) (User, error)
 	GetUserByUsername(username string) (User, error)
 	CreateUser(*User) error
-	UpdateUser(user User, id int) (User, error)
+	UpdateUser(user User) (User, error)
 	DeleteUser(id int) (User, error)
 }

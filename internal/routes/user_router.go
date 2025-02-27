@@ -31,5 +31,6 @@ func UserRouter(r *mux.Router, db *sql.DB) {
 
 	// Routing Users
 	user.HandleFunc("", pkg.ConvertToHttpHandleFunc(userHandler.GetAllUser)).Methods("GET")
+	user.HandleFunc("/{id}", pkg.ConvertToHttpHandleFunc(userHandler.UpdateUser)).Methods("PATCH")
 	user.HandleFunc("/{id}", pkg.ConvertToHttpHandleFunc(userHandler.DeleteUser)).Methods("DELETE")
 }
