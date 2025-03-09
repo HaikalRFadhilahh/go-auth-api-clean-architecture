@@ -45,6 +45,13 @@ func (s *apiServer) Run() {
 	// Routing
 	routes.UserRouter(r, db)
 
+	// Health Check
+	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Application Healthy!"))
+	})
+
 	// Not Found Handler
 	r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		pkg.HttpErrorResponse(w, apierror.ErrPageNotFound)
