@@ -70,7 +70,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload Result SCA Test with Github Actions Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         continue-on-error: true
         with:
           name: govulncheck SCA Test Result
@@ -97,7 +97,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload Result SAST Test with Github Actions Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         continue-on-error: true
         with:
           name: gosec SAST Test Result
@@ -123,7 +123,7 @@ jobs:
         run: docker run -v $(pwd):/zap/wrk --rm zaproxy/zap-stable:2.16.1 zap-baseline.py -t ${{ secrets.URL_APP_STAGING }} -w result-zaproxy-baseline.md
 
       - name: Upload Result DAST Test with Github Actions Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         continue-on-error: true
         with:
           name: Zaproxy Baseline DAST Test Result
