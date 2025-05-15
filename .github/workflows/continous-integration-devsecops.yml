@@ -5,7 +5,6 @@ name: Continous Integration DevSecOps from Development to Staging
 on:
   # Running when Pull Request to Staging Branches
   pull_request:
-    types: [opened, synchronize, reopened]
     branches:
       - staging
       - main
@@ -28,7 +27,7 @@ jobs:
     # List Steps of Jobs
     steps:
       - name: Checkout Code / Copy Source Code to Jobs Runner
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Unit Testing Script / Command
         run: echo "Run Your Unit Test Script Here"
@@ -44,7 +43,7 @@ jobs:
     # List Steps of Jobs
     steps:
       - name: Checkout Code / Copy Source Code to Jobs Runner
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Integration Testing Script / Command
         run: echo "Run Your Integration Test Script Here"
@@ -60,7 +59,7 @@ jobs:
     # List Steps of Jobs
     steps:
       - name: Checkout Code / Copy Source Code to Jobs Runner
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Pull Docker Images govulncheck for SCA
         run: docker pull docker pull ghcr.io/haikalrfadhilahh/govulncheck:1.1.4
@@ -70,7 +69,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload Result SCA Test with Github Actions Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         continue-on-error: true
         with:
           name: govulncheck SCA Test Result
@@ -87,7 +86,7 @@ jobs:
     # List Steps of Jobs
     steps:
       - name: Checkout Code / Copy Source Code to Jobs Runner
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Pull Docker Images govulncheck for SAST
         run: docker pull docker pull ghcr.io/haikalrfadhilahh/gosec:2.22.4
@@ -97,7 +96,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload Result SAST Test with Github Actions Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         continue-on-error: true
         with:
           name: gosec SAST Test Result
@@ -123,7 +122,7 @@ jobs:
         run: docker run -v $(pwd):/zap/wrk --rm zaproxy/zap-stable:2.16.1 zap-baseline.py -t ${{ secrets.URL_APP_STAGING }} -w result-zaproxy-baseline.md
 
       - name: Upload Result DAST Test with Github Actions Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         continue-on-error: true
         with:
           name: Zaproxy Baseline DAST Test Result
