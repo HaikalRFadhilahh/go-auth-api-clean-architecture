@@ -134,7 +134,7 @@ jobs:
     # Running Jobs Deployment Staging in Ubuntu OS
     runs-on: ubuntu-latest
     # Running Jobs when Success Merged on Staging
-    if: ${{ github.event_name == 'push' && github.base_ref == 'staging' }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/staging' }}
 
     # List of Steps
     steps:
@@ -149,7 +149,7 @@ jobs:
     # Running Jobs Deployment Production in Ubuntu OS
     runs-on: ubuntu-latest
     # Running Jobs when Success Merged on Staging
-    if: ${{ github.event_name == 'push' && github.base_ref == 'master' }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
 
     # List of Steps
     steps:
