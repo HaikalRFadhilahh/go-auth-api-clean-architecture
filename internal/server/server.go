@@ -49,7 +49,7 @@ func (s *apiServer) Run() {
 	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Application Healthy and Running Good!"))
+		w.Write([]byte("Application Healthy 🚀"))
 	}).Methods("GET", "POST")
 
 	// Not Found Handler
