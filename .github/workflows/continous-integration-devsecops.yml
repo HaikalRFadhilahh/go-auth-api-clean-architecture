@@ -7,12 +7,12 @@ on:
   pull_request:
     branches:
       - staging
-      - main
+      - master
   # And Running Pipeline when Pushed to Staging Branches
   push:
     branches:
       - staging
-      - main
+      - master
 
 # List Of Jobs Pipeline / Contionous Integration
 jobs:
