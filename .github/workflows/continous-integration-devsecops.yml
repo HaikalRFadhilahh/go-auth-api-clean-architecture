@@ -111,7 +111,7 @@ jobs:
     environment: staging
 
     # Running Jobs when
-    if: ${{ github.event_name == 'push_request' && github.base_ref == 'master' }}
+    if: ${{ github.event_name == 'pull_request' && github.base_ref == 'master' }}
 
     # List of Steps
     steps:
