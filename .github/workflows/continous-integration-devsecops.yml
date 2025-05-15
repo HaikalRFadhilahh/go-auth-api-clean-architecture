@@ -28,7 +28,7 @@ jobs:
     # List Steps of Jobs
     steps:
       - name: Checkout Code / Copy Source Code to Jobs Runner
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Unit Testing Script / Command
         run: echo "Run Your Unit Test Script Here"
@@ -44,7 +44,7 @@ jobs:
     # List Steps of Jobs
     steps:
       - name: Checkout Code / Copy Source Code to Jobs Runner
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Integration Testing Script / Command
         run: echo "Run Your Integration Test Script Here"
@@ -60,7 +60,7 @@ jobs:
     # List Steps of Jobs
     steps:
       - name: Checkout Code / Copy Source Code to Jobs Runner
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Pull Docker Images govulncheck for SCA
         run: docker pull docker pull ghcr.io/haikalrfadhilahh/govulncheck:1.1.4
@@ -87,7 +87,7 @@ jobs:
     # List Steps of Jobs
     steps:
       - name: Checkout Code / Copy Source Code to Jobs Runner
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Pull Docker Images govulncheck for SAST
         run: docker pull docker pull ghcr.io/haikalrfadhilahh/gosec:2.22.4
