@@ -1,5 +1,0 @@
-[2m[33mGo: [0mgo1.24.3
-[2m[33mScanner: [0mgovulncheck@v1.1.4
-[2m[33mDB: [0mhttps://vuln.go.dev
-[2m[33mDB updated: [0m2025-05-13 16:39:35 +0000 UTC
-

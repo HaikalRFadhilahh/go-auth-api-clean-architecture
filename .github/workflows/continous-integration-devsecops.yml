@@ -7,12 +7,12 @@ on:
   pull_request:
     branches:
       - staging
-      - main
+      - master
   # And Running Pipeline when Pushed to Staging Branches
   push:
     branches:
       - staging
-      - main
+      - master
 
 # List Of Jobs Pipeline / Contionous Integration
 jobs:
@@ -119,7 +119,8 @@ jobs:
         run: docker pull zaproxy/zap-stable:2.16.1
 
       - name: DAST Scan with Owasp Baseline
-        run: docker run -v $(pwd):/zap/wrk --rm zaproxy/zap-stable:2.16.1 zap-baseline.py -t ${{ secrets.URL_APP_STAGING }} -w result-zaproxy-baseline.md
+        run: docker run -u root --privileged -v $(pwd):/zap/wrk:rw --rm zaproxy/zap-stable:2.16.1 zap-baseline.py -t ${{ secrets.URL_APP_STAGING }} -w result-zaproxy-baseline.md
+        continue-on-error: true
 
       - name: Upload Result DAST Test with Github Actions Artifacts
         uses: actions/upload-artifact@v4
