@@ -5,7 +5,6 @@ name: Continous Integration DevSecOps from Development to Staging
 on:
   # Running when Pull Request to Staging Branches
   pull_request:
-    types: [opened, synchronize, reopened]
     branches:
       - staging
       - main
